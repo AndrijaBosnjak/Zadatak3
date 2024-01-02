@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isGameStart, setIsGameStart] = useState(false);
+  const [enteredWord, setEnteredWord] = useState("");
+  const [isWordEntered, setIsWordEntered] = useState(false);
+
+  const onStartGame = () => {
+    setIsGameStart(true);
+  };
+
+  const onEnterWord = (event) => {
+    console.log(enteredWord);
+    setEnteredWord("");
+    setIsWordEntered(true);
+
+    return 
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {!isGameStart && <button onClick={onStartGame}>Play</button>}
+      {isGameStart && (
+        <>
+          <p>Unesi riječ od najmanje 3 slova:</p>
+          <form>
+            <input
+              type="text"
+              id="word"
+              name="word"
+              placeholder="dozvoljena su samo slova"
+              value={enteredWord}
+              onChange={(e) => setEnteredWord(e.target.value)}
+            />
+          </form>
+          <button onClick={onEnterWord}>UNESI</button>
+        </>
+      )}
+
+      {isWordEntered && <p>Broj netočnih pokušaja:</p>}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
