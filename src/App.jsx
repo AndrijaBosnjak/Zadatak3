@@ -1,4 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
+import InputWord from "./components/InputWord";
+import Result from "./components/Result";
+import InputLetter from "./components/InputLetter";
+import CheckAnswer from "./components/CheckAnswer";
 
 import "./App.css";
 
@@ -14,12 +18,6 @@ function App() {
   const onStartGame = () => {
     setIsGameStart(true);
   };
-
-  const enteredWordArray = [...enteredWord];
-
-  // const equalsCheck = (enteredWordArray, correctGuesses) => {
-  //   return JSON.stringify(enteredWordArray) === JSON.stringify(correctGuesses);
-  // };
 
   const maskedEnteredWord = [...enteredWord]
     .map((letter) => (correctGuesses.includes(letter) ? letter : "_"))
@@ -48,33 +46,14 @@ function App() {
     setWrongGuesses([]);
   };
 
-  const showResults = useMemo(() => {
+  useEffect(() => {
     if (wrongGuessesCounter == 5) {
       setIsGameStart(false);
-
-      return (
-        <>
-          <h1>{[...enteredWord].join(" ")}</h1>
-          <h2>Popušio si!!</h2>
-          <button onClick={() => onPlayAgain()}>Play again</button>
-        </>
-      );
     }
-
-    }, [wrongGuessesCounter]);
-
-  // const showCorrectResult = () => {
-  //   if (!maskedEnteredWord.includes("_")) {
-      
-  //     return (
-  //       <>
-  //         <h1>{[...enteredWord].join(" ")}</h1>
-  //         <h2>Čestitam!</h2>
-  //         <button onClick={() => onPlayAgain()}>Play again</button>
-  //       </>
-  //     );
-  //   }
-  // };
+    if (!maskedEnteredWord.includes("_")) {
+      setIsGameStart(false);
+    }
+  }, [wrongGuessesCounter, maskedEnteredWord]);
 
   if (!isWordEntered) {
     return (
@@ -82,18 +61,12 @@ function App() {
         {!isGameStart && <button onClick={onStartGame}>Play</button>}
         {isGameStart && (
           <>
-            <h2>Unesi riječ od najmanje 3 slova:</h2>
-            <form>
-              <input
-                type="text"
-                id="word"
-                name="word"
-                placeholder="dozvoljena su samo slova"
-                value={enteredWord}
-                onChange={(e) => setEnteredWord(e.target.value)}
-              />
-            </form>
-            <button onClick={onEnterWord}>UNESI</button>
+            {" "}
+            <InputWord
+              enteredWord={enteredWord}
+              setEnteredWord={setEnteredWord}
+              onEnterWord={onEnterWord}
+            />
           </>
         )}
       </>
@@ -104,26 +77,24 @@ function App() {
     <>
       {isGameStart && (
         <>
-          <h1>{maskedEnteredWord}</h1>
-          <h3>Broj netočnih pokušaja : {wrongGuessesCounter} / 5</h3>
-          <p>Krivi odgovori: {wrongGuesses.join(" , ")} </p>
-          <p>Unesi jedno slovo:</p>
-          <form>
-            <input
-              type="text"
-              id="word"
-              name="word"
-              placeholder="dozvoljena su samo slova"
-              value={enteredLetter}
-              onChange={(e) => setEnteredLetter(e.target.value)}
-            />
-          </form>
-          <button onClick={onEnterLetter}>PROVJERI</button>
+          <CheckAnswer
+            maskedEnteredWord={maskedEnteredWord}
+            wrongGuesses={wrongGuesses}
+            wrongGuessesCounter={wrongGuessesCounter}
+          />
+          <InputLetter
+            enteredLetter={enteredLetter}
+            setEnteredLetter={setEnteredLetter}
+            onEnterLetter={onEnterLetter}
+          />
         </>
       )}
-      {showResults}
-      {!maskedEnteredWord.includes("_") && <p>Pobjedio si!</p>}
-      {/* {showCorrectResult} */}
+      <Result
+        wrongGuessesCounter={wrongGuessesCounter}
+        maskedEnteredWord={maskedEnteredWord}
+        enteredWord={enteredWord}
+        playAgain={onPlayAgain}
+      />
     </>
   );
 }
