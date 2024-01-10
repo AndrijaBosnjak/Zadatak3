@@ -6,7 +6,7 @@ const InputLetter = ({ enteredLetter, setEnteredLetter, onEnterLetter }) => {
           type="text"
           id="word"
           name="word"
-          placeholder="dozvoljena su samo slova"
+          placeholder="upiši jedno slovo"
           value={enteredLetter}
           onChange={(e) => setEnteredLetter(e.target.value)}
         />

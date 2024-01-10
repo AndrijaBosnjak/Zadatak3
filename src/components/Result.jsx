@@ -4,7 +4,7 @@ const Result = ({
   enteredWord,
   playAgain,
 }) => {
-  if (wrongGuessesCounter == 5) {
+  if (wrongGuessesCounter == 6) {
     return (
       <>
         <h1>{[...enteredWord].join(" ")}</h1>

@@ -3,6 +3,7 @@ import InputWord from "./components/InputWord";
 import Result from "./components/Result";
 import InputLetter from "./components/InputLetter";
 import CheckAnswer from "./components/CheckAnswer";
+import Figure from "./components/Figure";
 
 import "./App.css";
 
@@ -47,7 +48,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (wrongGuessesCounter == 5) {
+    if (wrongGuessesCounter == 6) {
       setIsGameStart(false);
     }
     if (!maskedEnteredWord.includes("_")) {
@@ -75,6 +76,10 @@ function App() {
 
   return (
     <>
+      <div className="game-container">
+        {" "}
+        <Figure wrongGuessesCounter={wrongGuessesCounter} />
+      </div>
       {isGameStart && (
         <>
           <CheckAnswer
